@@ -11,8 +11,16 @@
     <div class="card-deck">
         <div class="card my-auto p-4">
         <div class="card-body">
-            <div class="card-title fs-2 text-center mb-4">Login</div>
-            <form method="get" action="/home">
+            <div class="card-title fs-2 text-center mb-4">Sign Up</div>
+            <form method="post" action="/home">
+                <div class="mb-3">
+                <label for="inputFname" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="inputFname">
+              </div>
+                <div class="mb-3">
+                <label for="inputLname" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="inputLname">
+              </div>
               <div class="mb-3">
                 <label for="inputEmail" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="inputEmail">
@@ -27,9 +35,6 @@
             </form>
         </div>
         </div>
-    </div>
-    <div class="mt-4">
-        Not registered yet, <a href="/register" class="sign-up-link">Sign up </a>here?
     </div>
 </body>
 </html>

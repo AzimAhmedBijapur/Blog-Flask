@@ -12,4 +12,9 @@ def index():
     return render_template('login.html')
 
 
+@app.route('/register')
+def register():
+    return render_template('sign-in.html')
+
+
 app.run(debug=True)

@@ -8,8 +8,13 @@ list-style-type:none;
 nav{
   background-image: linear-gradient(rgba(0,0,0,0.5), rgba(255,255,255,0));
 }
+.header-form{
+height:calc(400px + 4vh);
+}
+.header-home{
+height:calc(500px + 4vh);
+}
 #header{
-  height:calc(500px + 4vh);
   background:url('../static/bg-head.jpg');
   background-repeat:no-repeat;
   background-size:cover;

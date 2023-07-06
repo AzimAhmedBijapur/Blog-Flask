@@ -2,7 +2,7 @@
   font-family: codefont;
   src: url('../static/font-med.ttf');
 }
-body{
+.body-form{
 display:flex;
 flex-direction:column;
 justify-content:center;

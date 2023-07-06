@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import json
 
 app = Flask(__name__)
@@ -20,6 +20,17 @@ def register():
 @app.route('/home')
 def home():
     return render_template('home.html')
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+
+@app.route('/contact/us', methods=['POST', 'GET'])
+def contactus():
+    if request.method == 'POST':
+        return 'HEY'
 
 
 app.run(debug=True)

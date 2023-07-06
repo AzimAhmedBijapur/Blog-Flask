@@ -1,3 +1,7 @@
+@font-face {
+  font-family: codefont;
+  src: url('../static/font-med.ttf');
+}
 body{
 display:flex;
 flex-direction:column;
@@ -12,7 +16,12 @@ justify-content:center;
 }
 .card{
 width:calc(250px + 10vw);
+font-family:codefont;
 }
-.sign-up-link{
+.sign-up-link,.line{
 text-decoration:none;
+font-family:codefont;
+}
+button{
+font-family:codefont;
 }

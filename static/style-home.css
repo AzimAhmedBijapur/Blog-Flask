@@ -1,0 +1,38 @@
+li{
+list-style-type:none;
+}
+@font-face {
+  font-family: codefont;
+  src: url('../static/font-med.ttf');
+}
+nav{
+  background-image: linear-gradient(rgba(0,0,0,0.5), rgba(255,255,255,0));
+}
+#header{
+  height:calc(500px + 4vh);
+  background:url('../static/bg-head.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-image: linear-gradient(rgba(0,0,0,0.6), rgba(255,255,255,0.1)),url('../static/bg-head.jpg');
+  display:flex;
+  flex-direction:column;
+  gap:5rem;
+  font-family:codefont;
+}
+.card-img-top{
+height:300px;
+overflow:hidden;
+width:auto;
+}
+.card-title{
+font-family:codefont;
+font-weight:bold;
+}
+.card-text{
+font-family:codefont;
+word-spacing:0.1px;
+letter-spacing:0.1px;
+}
+footer{
+font-family:codefont;
+}

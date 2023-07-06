@@ -1,0 +1,18 @@
+body{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+.card-deck{
+width:100vw;
+display:flex;
+justify-content:center;
+}
+.card{
+width:calc(250px + 10vw);
+}
+.sign-up-link{
+text-decoration:none;
+}

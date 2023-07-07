@@ -33,4 +33,9 @@ def contactus():
         return 'HEY'
 
 
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+
 app.run(debug=True)

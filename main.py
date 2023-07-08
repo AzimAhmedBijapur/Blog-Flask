@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import json
 import MySQLdb
-
+import smtplib, ssl
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -62,8 +62,20 @@ def home():
     return render_template('home.html', name="A blog for programmers by programmers")
 
 
-@app.route('/contact')
+@app.route('/contact', methods=['POST', 'GET'])
 def contact():
+    if request.method == 'GET':
+        return render_template('contact.html')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    sub = request.form.get('subject')
+    msg = request.form.get('msg')
+    port = 465
+    context = ssl.create_default_context()
+    message = 'Subject: {}\n\n{}'.format(sub, msg)
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+        server.login(email, password)
+        server.sendmail(email, 'whalefry@gmail.com', message)
     return render_template('contact.html')
 
 

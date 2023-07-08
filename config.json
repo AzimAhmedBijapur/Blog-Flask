@@ -1,6 +1,7 @@
 {
   "params": {
     "local_uri" : "mysql://root:@localhost/techblog",
-    "production_uri": ""
+    "production_uri": "",
+    "app_password": "edmkdgxakymusway"
   }
 }

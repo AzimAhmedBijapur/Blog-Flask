@@ -74,7 +74,10 @@ def contact():
     context = ssl.create_default_context()
     message = 'Subject: {}\n\n{}'.format(sub, msg)
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        server.login(email, password)
+        if local:
+            server.login(email, param['app_password'])
+        else:
+            server.login(email, password)
         server.sendmail(email, 'whalefry@gmail.com', message)
     return render_template('contact.html')
 

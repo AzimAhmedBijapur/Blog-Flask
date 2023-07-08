@@ -28,9 +28,18 @@ class User(userdb.Model):
     password = userdb.Column(userdb.String(15), unique=True)
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
 def index():
-    return render_template('login.html')
+    if request.method == 'GET':
+        return render_template('login.html')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    user = User.query.filter_by(email=email, password=password).first()
+    user_exists = bool(User.query.filter_by(email=email, password=password).first())
+    if user_exists:
+        return render_template('home.html', name="Welcome "+user.fname+" "+user.lname)
+    else:
+        return render_template('login.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -50,7 +59,7 @@ def register():
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', name="A blog for programmers by programmers")
 
 
 @app.route('/contact')

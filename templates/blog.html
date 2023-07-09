@@ -27,18 +27,33 @@
     <div class="card-deck mt-5 mb-5">
         <div class="card my-auto p-4 border border-dark w-75" >
         <div class="card-body">
-            <form method="POST" action="/contact/us">
+            <div class="alert alert-danger flash-msg" role="alert" id="flash-msg" >
+                {% with message = get_flashed_messages()|first %}
+                    {% if message %}
+                     {{ message }}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <form method="POST" action="/blog" enctype="multipart/form-data">
+                <div class="mb-3">
+                <label for="inputEmail" class="form-label">Email address</label>
+                <input type="email" class="form-control border border-dark" id="inputEmail" name="email">
+              </div>
+                <div class="mb-3">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control border border-dark" id="inputPassword" name="password">
+              </div>
               <div class="mb-3">
                 <label for="inputTitle" class="form-label">Title</label>
-                <input type="text" class="form-control border border-dark" id="inputTitle">
+                <input type="text" class="form-control border border-dark" id="inputTitle" name="title">
               </div>
               <div class="mb-3">
                 <label for="content" class="form-label">Content</label>
-                  <textarea class="form-control border border-dark" style="height:50vh" id="content"></textarea>
+                  <textarea class="form-control border border-dark" style="height:50vh" id="content" name="content"></textarea>
               </div>
                 <div class="mb-3">
                     <label for="inputImg" class="form-label mb-3">Upload an image</label>
-                <input type="file" class="form-control border border-dark" id="inputImg" accept=".png,.jpeg" placeholder="Choose an image">
+                <input type="file" class="form-control border border-dark" id="inputImg" accept=".png,.jpeg" placeholder="Choose an image" name="img" >
                 </div>
               <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success mx-auto ">Submit</button>
@@ -55,5 +70,13 @@
       </div>
       <!-- Copyright -->
     </footer>
+    <script>
+        var flashMessageContainer = document.querySelector('#flash-msg');
+        if (!flashMessageContainer.innerHTML.trim()) {
+            flashMessageContainer.style.display = 'none';
+        } else {
+            flashMessageContainer.style.display = 'block';
+        }
+        </script>
 </body>
 </html>

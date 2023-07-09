@@ -2,10 +2,11 @@ import json
 import smtplib
 import ssl
 import psycopg2
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect
+import base64
 
 app = Flask(__name__)
-
+app.secret_key = 'your_secret_key'
 local = True
 
 with open('config.json') as file:
@@ -35,6 +36,21 @@ try:
 except Exception as e:
     print('Error creating table users', e)
 
+try:
+    cur.execute("""CREATE TABLE IF NOT EXISTS posts(
+        id serial PRIMARY KEY,
+        email VARCHAR(120),
+        password VARCHAR(15),
+        title VARCHAR(255),
+        content TEXT,
+        img BYTEA);
+    """)
+    conn.commit()
+    print('Successfully created table posts')
+except Exception as e:
+    print('Error creating table posts', e)
+
+
 # routes
 
 
@@ -44,7 +60,6 @@ def index():
         return render_template('login.html')
     email = request.form.get('email')
     password = request.form.get('password')
-    print("select id from users where email=%s and password=%s;", (email, password))
     cur.execute("select id,fname,lname from users where email=%s and password=%s;", (email, password))
     user = cur.fetchone()
     if user is None:
@@ -71,8 +86,8 @@ def register():
                     (fname, lname, email, password))
         conn.commit()
         print('Successfully inserted to users')
-    except Exception as e:
-        print('Could not insert to users', e)
+    except Exception as ex:
+        print('Could not insert to users', ex)
     return render_template('login.html')
 
 
@@ -101,8 +116,29 @@ def contact():
     return render_template('contact.html')
 
 
-@app.route('/blog')
+@app.route('/blog', methods=['POST', 'GET'])
 def blog():
+    if request.method == 'GET':
+        return render_template('blog.html')
+    try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        title = request.form.get('title')
+        content = request.form.get('content')
+        img = request.files['img']
+        image_data = img.read()
+        encoded_image = base64.b64encode(image_data)
+        cur.execute("select id,fname,lname from users where email=%s and password=%s;", (email, password))
+        user = cur.fetchone()
+        if user is None:
+            flash('You need to login to post blogs')
+            return render_template('blog.html')
+        cur.execute("INSERT INTO posts (email, password, title, content, img) VALUES (%s, %s, %s, %s, %s);",
+                    (email, password, title, content, encoded_image))
+        conn.commit()
+        print('Successfully inserted into posts')
+    except Exception as ex:
+        print('Could not insert to posts database',ex)
     return render_template('blog.html')
 
 

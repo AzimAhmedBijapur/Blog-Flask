@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request
 import json
-import MySQLdb
-import smtplib, ssl
-from flask_sqlalchemy import SQLAlchemy
+import smtplib
+import ssl
+import psycopg2
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -11,21 +11,31 @@ local = True
 with open('config.json') as file:
     param = json.load(file)["params"]
 
-if local:
-    app.config['SQLALCHEMY_DATABASE_URI'] = param['local_uri']
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = param['production_uri']
 
+# postgresql db
+try:
+    conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)
+    print('Connection Successful')
+except Exception as e:
+    print('Connection Failed', e)
 
-userdb = SQLAlchemy(app)
+cur = conn.cursor()
 
+try:
+    cur.execute("""CREATE TABLE IF NOT EXISTS users(
+        id serial PRIMARY KEY,
+        fname TEXT,
+        lname TEXT,
+        email VARCHAR(120),
+        password VARCHAR(15)
+        );
+    """)
+    conn.commit()
+    print('Successfully created table users')
+except Exception as e:
+    print('Error creating table users', e)
 
-class User(userdb.Model):
-    sno = userdb.Column(userdb.Integer, primary_key=True)
-    fname = userdb.Column(userdb.String(80))
-    lname = userdb.Column(userdb.String(80))
-    email = userdb.Column(userdb.String(120), unique=True)
-    password = userdb.Column(userdb.String(15), unique=True)
+# routes
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -34,12 +44,15 @@ def index():
         return render_template('login.html')
     email = request.form.get('email')
     password = request.form.get('password')
-    user = User.query.filter_by(email=email, password=password).first()
-    user_exists = bool(User.query.filter_by(email=email, password=password).first())
-    if user_exists:
-        return render_template('home.html', name="Welcome "+user.fname+" "+user.lname)
-    else:
+    print("select id from users where email=%s and password=%s;", (email, password))
+    cur.execute("select id,fname,lname from users where email=%s and password=%s;", (email, password))
+    user = cur.fetchone()
+    if user is None:
         return render_template('login.html')
+    fname = user[1]
+    lname = user[2]
+    conn.commit()
+    return render_template('home.html', name=f"Welcome {fname} {lname}")
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -51,9 +64,15 @@ def register():
     lname = request.form.get('lname')
     email = request.form.get('email')
     password = request.form.get('password')
-    new_user = User(fname=fname, lname=lname, email=email, password=password)
-    userdb.session.add(new_user)
-    userdb.session.commit()
+    try:
+        print("INSERT INTO users (fname, lname, email, password) VALUES (%s,%s,%s,%s)",
+                    (fname, lname, email, password))
+        cur.execute("INSERT INTO users (fname, lname, email, password) VALUES (%s,%s,%s,%s)",
+                    (fname, lname, email, password))
+        conn.commit()
+        print('Successfully inserted to users')
+    except Exception as e:
+        print('Could not insert to users', e)
     return render_template('login.html')
 
 
@@ -82,15 +101,11 @@ def contact():
     return render_template('contact.html')
 
 
-@app.route('/contact/us', methods=['POST', 'GET'])
-def contactus():
-    if request.method == 'POST':
-        return 'HEY'
-
-
 @app.route('/blog')
 def blog():
     return render_template('blog.html')
 
 
 app.run(debug=True)
+cur.close()
+conn.close()

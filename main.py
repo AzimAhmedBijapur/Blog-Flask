@@ -2,8 +2,14 @@ import json
 import smtplib
 import ssl
 import psycopg2
+from io import BytesIO
+from PIL import Image
 from flask import Flask, render_template, request, flash, redirect
 import base64
+import os
+import imghdr
+from uuid import uuid1
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -27,7 +33,7 @@ try:
         id serial PRIMARY KEY,
         fname TEXT,
         lname TEXT,
-        email VARCHAR(120),
+        email VARCHAR(120) UNIQUE,
         password VARCHAR(15)
         );
     """)
@@ -43,7 +49,7 @@ try:
         password VARCHAR(15),
         title VARCHAR(255),
         content TEXT,
-        img BYTEA);
+        img BYTEA)
     """)
     conn.commit()
     print('Successfully created table posts')
@@ -80,9 +86,8 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
     try:
-        print("INSERT INTO users (fname, lname, email, password) VALUES (%s,%s,%s,%s)",
-                    (fname, lname, email, password))
-        cur.execute("INSERT INTO users (fname, lname, email, password) VALUES (%s,%s,%s,%s)",
+        cur.execute("INSERT INTO users (fname, lname, email, password) VALUES (%s,%s,%s,%s) "
+                    "ON CONFLICT (email) DO NOTHING;",
                     (fname, lname, email, password))
         conn.commit()
         print('Successfully inserted to users')
@@ -91,9 +96,32 @@ def register():
     return render_template('login.html')
 
 
+def get_format(bytea):
+    # decoded_string = bytes(base64.b64encode(bytea).decode('utf-8'))
+    encoded_bytes = bytes(bytea)
+    extension = imghdr.what(None, h=encoded_bytes)
+    return extension
+
+
+def decode_bytea(bytea):
+    return base64.b64encode(bytea).decode('utf-8')
+
+
+app.jinja_env.filters.update(get_format=get_format)
+
+
+app.jinja_env.filters.update(decode_bytea=decode_bytea)
+
+
 @app.route('/home')
 def home():
-    return render_template('home.html', name="A blog for programmers by programmers")
+    try:
+        cur.execute('SELECT * FROM POSTS;')
+        posts = cur.fetchall();
+        conn.commit()
+    except Exception as ex:
+        print('Could not fetch from the db', ex)
+    return render_template('home.html', name="A blog for programmers by programmers", posts=posts)
 
 
 @app.route('/contact', methods=['POST', 'GET'])
@@ -126,12 +154,12 @@ def blog():
         title = request.form.get('title')
         content = request.form.get('content')
         img = request.files['img']
-        image_data = img.read()
-        encoded_image = base64.b64encode(image_data)
+        img_file = img.read()
+        encoded_image = base64.b64encode(img_file)
         cur.execute("select id,fname,lname from users where email=%s and password=%s;", (email, password))
         user = cur.fetchone()
         if user is None:
-            flash('You need to login to post blogs')
+            flash('Invalid email or password')
             return render_template('blog.html')
         cur.execute("INSERT INTO posts (email, password, title, content, img) VALUES (%s, %s, %s, %s, %s);",
                     (email, password, title, content, encoded_image))

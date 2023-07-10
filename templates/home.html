@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<div class="d-flex p-5 mt-5 mb-5 w-75 mx-auto">
+<div class="d-flex p-5 mt-5 mb-5 mx-auto" id="container-cards">
     <div class="row row-cols-1 row-cols-md-2 g-4">
       <div class="col">
         <div class="card h-100 border border-dark">
@@ -39,6 +39,17 @@
           </div>
         </div>
       </div>
+      {% for post in posts %}
+      <div class="col">
+        <div class="card h-100 border border-dark">
+          <img src="data:image/{{ post[5]|get_format }};base64,{{ post[5]|decode_bytea }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{ post[3]}}</h5>
+            <p class="card-text">{{ post[4] }}. {{ post[5]|get_format }} </p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
 </div>
 {% endblock %}

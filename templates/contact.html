@@ -38,19 +38,19 @@
             <form method="POST" action="/contact">
               <div class="mb-3">
                 <label for="inputEmail" class="form-label">Email address</label>
-                <input type="email" class="form-control border border-dark" id="inputEmail" name="email">
+                <input type="email" class="form-control border border-dark" id="inputEmail" name="email" required>
               </div>
                 <div class="mb-3">
                 <label for="inputPw" class="form-label">Password for gmail</label>
-                <input type="password" class="form-control border border-dark" id="inputPw" name="password">
+                <input type="password" class="form-control border border-dark" id="inputPw" name="password" required>
               </div>
                 <div class="mb-3">
                 <label for="inputSub" class="form-label">Subject</label>
-                <input type="text" class="form-control border border-dark" id="inputSub" name="subject">
+                <input type="text" class="form-control border border-dark" id="inputSub" name="subject" required>
               </div>
               <div class="mb-3">
                 <label for="msg" class="form-label">Message</label>
-                  <textarea class="form-control border border-dark " id="msg" maxlength="200" name="msg"></textarea>
+                  <textarea class="form-control border border-dark " id="msg" maxlength="200" name="msg" required></textarea>
               </div>
                 <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success mx-auto ">Send</button>

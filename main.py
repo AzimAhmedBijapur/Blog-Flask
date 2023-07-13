@@ -147,7 +147,7 @@ def blog():
         user = cur.fetchone()
         if user is None:
             flash('Invalid email or password')
-            return render_template('blog.html')
+            return redirect('/blog')
         cur.execute("INSERT INTO posts (name,email, password, title, description, content, time) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s);",
                     (name, email, password, title, description, content, time))
@@ -155,7 +155,6 @@ def blog():
         print('Successfully inserted into posts')
     except Exception as ex:
         print('Could not insert to posts database', ex)
-    return render_template('blog.html')
 
 
 cur.execute("SELECT id, name, title, content, time FROM posts;")
@@ -169,7 +168,7 @@ def show_post(post_id):
         print(post)
         if post[0] == post_id:
             return render_template('post.html', title=post[2], content=post[3], name=post[1], time=post[4])
-    return "Post not found"
+    print("Post no found")
 
 
 app.run(debug=True)

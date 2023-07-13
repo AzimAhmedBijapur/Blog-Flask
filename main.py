@@ -85,9 +85,12 @@ def register():
                     (fname, lname, email, password))
         conn.commit()
         print('Successfully inserted to users')
+        flash('You are successfully registered')
+        return redirect('/')
     except Exception as ex:
         print('Could not insert to users', ex)
-    return render_template('login.html')
+        flash('Failed to register')
+        return redirect('/register')
 
 
 @app.route('/home')
@@ -112,13 +115,19 @@ def contact():
     port = 465
     context = ssl.create_default_context()
     message = 'Subject: {}\n\n{}'.format(sub, msg)
-    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-        if local:
-            server.login(email, param['app_password'])
-        else:
-            server.login(email, password)
-        server.sendmail(email, 'whalefry@gmail.com', message)
-    return render_template('contact.html')
+    try:
+        with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+            if local:
+                server.login(email, param['app_password'])
+            else:
+                server.login(email, password)
+            server.sendmail(email, 'whalefry@gmail.com', message)
+        flash('Email sent successfully')
+        return redirect('/contact')
+    except Exception as ex:
+        print('Email not set', ex)
+        flash('Check your email id and password and try again')
+        return redirect('/contact')
 
 
 @app.route('/blog', methods=['POST', 'GET'])

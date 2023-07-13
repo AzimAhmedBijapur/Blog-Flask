@@ -65,7 +65,8 @@ def index():
     cur.execute("select id,fname,lname from users where email=%s and password=%s;", (email, password))
     user = cur.fetchone()
     if user is None:
-        return render_template('login.html')
+        flash('Please register to login')
+        return redirect('/')
     conn.commit()
     return redirect('/home')
 

@@ -3,52 +3,18 @@
 {% block body %}
 <div class="d-flex p-5 mt-5 mb-5 mx-auto" id="container-cards">
     <div class="row row-cols-1 row-cols-md-2 g-4">
-      <div class="col">
-        <div class="card h-100 border border-dark">
-          <img src="{{url_for('static',filename='temp-card.jpg')}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">The divine semicolon</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100 border border-dark">
-          <img src="{{url_for('static',filename='temp-card.jpg')}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title ">Why indents in python?</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100 border border-dark">
-          <img src="{{url_for('static',filename='temp-card.jpg')}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Java garbage collection</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100 border border-dark">
-          <img src="{{url_for('static',filename='temp-card.jpg')}}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">'C' what you can do?</h5>
-            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-          </div>
-        </div>
-      </div>
       {% for post in posts %}
+      <a href="/post/{{post[0]}}" style="text-decoration:none;">
       <div class="col">
         <div class="card h-100 border border-dark">
-          <img src="data:image/{{ post[5]|get_format }};base64,{{ post[5]|decode_bytea }}" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title">{{ post[3]}}</h5>
-            <p class="card-text">{{ post[4] }}. {{ post[5]|get_format }} </p>
+            <h5 class="card-title">{{ post[4]}}</h5>
+            <pre class="text-secondary mt-3">Posted by {{post[1]}} on {{post[7]}}</pre>
+            <p class="card-text" style="text-align:justify;">{{ post[5] }}</p>
           </div>
         </div>
       </div>
+        </a>
       {% endfor %}
     </div>
 </div>

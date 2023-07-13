@@ -37,6 +37,10 @@
             </div>
             <form method="POST" action="/blog" enctype="multipart/form-data">
                 <div class="mb-3">
+                <label for="inputName" class="form-label">Full name</label>
+                <input type="text" class="form-control border border-dark" id="inputName" name="name" required>
+              </div>
+                <div class="mb-3">
                 <label for="inputEmail" class="form-label">Email address</label>
                 <input type="email" class="form-control border border-dark" id="inputEmail" name="email" required>
               </div>
@@ -46,16 +50,16 @@
               </div>
               <div class="mb-3">
                 <label for="inputTitle" class="form-label">Title</label>
-                <input type="text" class="form-control border border-dark" id="inputTitle" name="title" required>
+                <input type="text" class="form-control border border-dark" id="inputTitle" name="title" maxlength="150" required>
+              </div>
+                <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                  <textarea class="form-control border border-dark" style="height:20vh" id="description" name="description" maxlength="200" required></textarea>
               </div>
               <div class="mb-3">
                 <label for="content" class="form-label">Content</label>
                   <textarea class="form-control border border-dark" style="height:50vh" id="content" name="content" required></textarea>
               </div>
-                <div class="mb-3">
-                    <label for="inputImg" class="form-label mb-3">Upload an image</label>
-                <input type="file" class="form-control border border-dark" id="inputImg" accept=".png, .jpg, .jpeg" placeholder="Choose an image" name="img" required>
-                </div>
               <div class="text-center mt-4">
                     <button type="submit" class="btn btn-success mx-auto ">Submit</button>
               </div>

@@ -7,15 +7,18 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-local = True
+local = False
 
 with open('config.json') as file:
     param = json.load(file)["params"]
 
-
 # postgresql db
 try:
-    conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)
+    if local:
+        conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)
+    else:
+        conn = psycopg2.connect('postgres://azim:XgO6hj987axpg6wZ9p6yJ1yN9nGpdttm@dpg-cip3l6l9aq0dcpvl8760-a.'
+                                'oregon-postgres.render.com/blog_gid6')
     print('Connection Successful')
 except Exception as e:
     print('Connection Failed', e)
@@ -155,6 +158,7 @@ def blog():
         print('Successfully inserted into posts')
     except Exception as ex:
         print('Could not insert to posts database', ex)
+    return render_template('blog.html')
 
 
 cur.execute("SELECT id, name, title, content, time FROM posts;")
@@ -169,6 +173,7 @@ def show_post(post_id):
         if post[0] == post_id:
             return render_template('post.html', title=post[2], content=post[3], name=post[1], time=post[4])
     print("Post no found")
+    return redirect(f'post/{post_id}')
 
 
 app.run(debug=True)

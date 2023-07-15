@@ -25,13 +25,8 @@ height:calc(500px + 4vh);
   font-family:codefont;
 }
 #container-cards{
- width:75%;
+ width:80%;
  }
-.card-img-top{
-height:calc(200px + 5vh);
-overflow:hidden;
-width:auto;
-}
 .card-title{
 font-family:codefont;
 font-weight:bold;
@@ -51,5 +46,6 @@ font-family:codefont;
  }
  .card{
  height:100px;
+ width:300px;
  }
 }

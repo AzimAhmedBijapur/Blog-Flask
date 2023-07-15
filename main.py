@@ -17,8 +17,7 @@ try:
     if local:
         conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)
     else:
-        conn = psycopg2.connect('postgres://azim:XgO6hj987axpg6wZ9p6yJ1yN9nGpdttm@dpg-cip3l6l9aq0dcpvl8760-a.'
-                                'oregon-postgres.render.com/blog_gid6')
+        conn = psycopg2.connect('postgres://azim:XgO6hj987axpg6wZ9p6yJ1yN9nGpdttm@dpg-cip3l6l9aq0dcpvl8760-a.oregon-postgres.render.com/blog_gid6')
     print('Connection Successful')
 except Exception as e:
     print('Connection Failed', e)

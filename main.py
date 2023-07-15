@@ -175,6 +175,6 @@ def show_post(post_id):
     return redirect(f'post/{post_id}')
 
 
-app.run(debug=True)
+app.run(host='0.0.0.0', port=5000, debug=True)
 cur.close()
 conn.close()

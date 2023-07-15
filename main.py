@@ -171,8 +171,7 @@ def show_post(post_id):
         print(post)
         if post[0] == post_id:
             return render_template('post.html', title=post[2], content=post[3], name=post[1], time=post[4])
-    print("Post no found")
-    return redirect(f'post/{post_id}')
+    return "Wait for sometime and try again"
 
 
 app.run(host='0.0.0.0', port=5000, debug=True)

@@ -7,12 +7,10 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-local = True
+local = False
 
 with open('config.json') as file:
     param = json.load(file)["params"]
-
-# postgresql db
 
 try:
     if local:
@@ -20,9 +18,13 @@ try:
     else:
         conn = psycopg2.connect('postgres://azim:XgO6hj987axpg6wZ9p6yJ1yN9nGpdttm@dpg-cip3l6l9aq0dcpvl8760-a.oregon-postgres.render.com/blog_gid6')
     print('Connection Successful')
-    cur = conn.cursor()
 except Exception as e:
     print('Connection Failed', e)
+
+
+cur = conn.cursor()
+
+# postgresql db
 
 
 try:
@@ -38,7 +40,6 @@ try:
     print('Successfully created table users')
 except Exception as e:
     print('Error creating table users', e)
-
 try:
     cur.execute("""CREATE TABLE IF NOT EXISTS posts(
         id serial PRIMARY KEY,
@@ -52,6 +53,8 @@ try:
     """)
     conn.commit()
     print('Successfully created table posts')
+except Exception as e:
+    print('Error creating table posts', e)
 except Exception as e:
     print('Error creating table posts', e)
 

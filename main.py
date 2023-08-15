@@ -7,7 +7,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
-local = False
+local = True
 
 with open('config.json') as file:
     param = json.load(file)["params"]
@@ -23,6 +23,7 @@ except Exception as e:
     print('Connection Failed', e)
 
 cur = conn.cursor()
+
 
 try:
     cur.execute("""CREATE TABLE IF NOT EXISTS users(
@@ -53,7 +54,6 @@ try:
     print('Successfully created table posts')
 except Exception as e:
     print('Error creating table posts', e)
-
 
 # routes
 

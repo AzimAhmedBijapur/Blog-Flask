@@ -1,4 +1,11 @@
 # Blog-Flask
+A basic Crud application using Flask and Postgresql
+# Capabilities
+1. Login
+2. Register
+3. Post blogs
+4. View blogs
+5. Contact the admin through form
 # Register to login
 ![image](https://github.com/AzimAhmedBijapur/Blog-Flask/assets/104296616/2383b424-2ba5-42e6-93e3-2c1ecbf1dc4b)
 # Login

@@ -13,6 +13,7 @@ with open('config.json') as file:
     param = json.load(file)["params"]
 
 # postgresql db
+conn = None
 try:
     if local:
         conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)

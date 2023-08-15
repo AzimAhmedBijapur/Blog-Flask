@@ -12,6 +12,7 @@ local = False
 with open('config.json') as file:
     param = json.load(file)["params"]
 
+# postgresql db
 try:
     if local:
         conn = psycopg2.connect(host="localhost", dbname="postgres", user="postgres", password="1234", port=5432)
@@ -21,11 +22,7 @@ try:
 except Exception as e:
     print('Connection Failed', e)
 
-
 cur = conn.cursor()
-
-# postgresql db
-
 
 try:
     cur.execute("""CREATE TABLE IF NOT EXISTS users(
@@ -40,6 +37,7 @@ try:
     print('Successfully created table users')
 except Exception as e:
     print('Error creating table users', e)
+
 try:
     cur.execute("""CREATE TABLE IF NOT EXISTS posts(
         id serial PRIMARY KEY,
@@ -55,8 +53,7 @@ try:
     print('Successfully created table posts')
 except Exception as e:
     print('Error creating table posts', e)
-except Exception as e:
-    print('Error creating table posts', e)
+
 
 # routes
 
